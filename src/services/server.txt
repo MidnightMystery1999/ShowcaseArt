@@ -1,0 +1,17 @@
+server url: 
+    BASE_URL: http://localhost:9090
+    register: /auth/register
+    login: /auth/login
+
+
+How to access error message:
+    errorObject.response.data.{password}
+    //usestate
+    error.errors.errorObject.response.data.email
+
+Login Url:
+POST -
+    BASE_URL /auth/login{
+        username:'',
+        password:''
+    }
