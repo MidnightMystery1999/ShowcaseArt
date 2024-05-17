@@ -77,7 +77,7 @@ const CustomNavbar=()=>{
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem tag={ReactLink} to="/about">About</DropdownItem>
-                <DropdownItem>Contact US</DropdownItem>
+                <DropdownItem tag={ReactLink} to="/contact">Contact US</DropdownItem>
                 
               </DropdownMenu>
             </UncontrolledDropdown>

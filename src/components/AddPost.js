@@ -2,23 +2,34 @@ import { Button, Card, CardBody, Container, Form, Input, Label } from "reactstra
 import { getAllCategories } from "../services/CategoryService";
 import { useEffect, useRef, useState } from "react";
 import JoditEditor, { Jodit } from "jodit-react";
-import { createPost } from "../services/PostServices";
+import { createPost, uploadPostImage } from "../services/PostServices";
 import { getCurrentUser } from "../Auth";
 import { toast } from "react-toastify";
 
-const AddPost = () => {
+const AddPost = ({ setRefresh }) => {
 
 
     const [categories,setCategories] = useState([]);
 
     const[user, setUser] = useState(undefined);
-
+    
+    
 
     const [post, setPost] = useState({
         title: "",
         content: "",
         categoryId:""
     })
+// ---------------image---------------
+    const [image, setImage] = useState(null);
+
+    const resetData=()=>{
+        setPost({
+            title: "",
+            content: "",
+            categoryId:""
+        });
+    };
 
 
     useEffect(()=>{
@@ -42,7 +53,7 @@ const AddPost = () => {
     // submit function for creating post
     const submitPost = (e) => {
         e.preventDefault();
-        console.log(post)
+        // console.log(post)
         if(post.title.trim() === "" || post.content.trim()  === "" || post.categoryId.trim()  === ""){
             alert("All fields are required")
             return;
@@ -51,7 +62,19 @@ const AddPost = () => {
 //  submitPost function
         post['userId'] = user.id
         createPost(post).then(data=>{
+
+            uploadPostImage(image, data.postId)
+                .then(data=>{
+                    
+                }).catch((error)=>{
+                    toast.error("Image upload failed");
+                    console.log(error)
+                })
+
+
+
             toast.success("Post created successfully");
+            setRefresh(prev => !prev); // This will trigger a re-render in the parent component
             setPost({
                 title: "",
                 content: "",
@@ -62,6 +85,13 @@ const AddPost = () => {
         })
         
     }
+
+
+    // image handler
+    const handleFileChange = (e) => {
+        console.log(e.target.files[0]);
+        setImage(e.target.files[0]);
+    };
 
     return (
         <div className = "wrapper">
@@ -92,6 +122,18 @@ const AddPost = () => {
                             onChange={newContent=>setContent(newContent)}/> */}
 
                         </div>
+
+
+                        <div className="my-3">
+                            <Label for="image">Upload Your ArtWork</Label>
+                            <Input
+                                id="image"
+                                name="file"
+                                type="file"
+                                onChange={handleFileChange}
+                            />
+                        </div>
+
                         <div className="my-3">
                         <Label
                         for="category"
@@ -103,9 +145,10 @@ const AddPost = () => {
                             id="category"
                             name="categoryId"
                             type="select"
+                            defaultValue="default"
                             onChange={(e)=>fieldChangeHandler(e,'categoryId')}
                         >
-                            <option disabled selected> -- Select Category --</option>
+                            <option value="default" disabled selected> -- Select Category --</option>
                             {
                                 categories.map((category)=>(
                                         <option value={category.categoryId} key={category.categoryId}> 
@@ -118,7 +161,7 @@ const AddPost = () => {
                         </div>
                         <Container className="text-center">
                             <Button type="submit" color="primary">Create Post</Button>
-                            <Button color="danger" className="ms-2">Reset</Button>
+                            <Button onClick={resetData} color="danger" className="ms-2" type="reset">Reset</Button>
                         </Container>
                     </Form>
                 </CardBody>

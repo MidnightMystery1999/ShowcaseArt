@@ -4,8 +4,18 @@
 body {
   font-family: 'Cute Font', cursive!important;
   background: #F8B5CB!important;
+  background-image: url(bgv3.jpg)!important;
+  background-repeat: no-repeat!important;
+  background-attachment: fixed!important;
+  background-size: cover!important;
 }
 
 .navbar{
-  background: #360515!important;
+  background: #20295B!important;
+}
+
+.posts-container {
+  display: grid!important;
+  grid-template-columns: repeat(3, 1fr)!important;
+  gap: 20px!important;
 }

@@ -15,3 +15,6 @@ POST -
         username:'',
         password:''
     }
+
+password - 1...admin007
+            2...password002

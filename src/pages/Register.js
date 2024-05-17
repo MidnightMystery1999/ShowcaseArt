@@ -97,7 +97,7 @@ const submitForm=(e)=>{
                                 <Input type="text" className="form-control" id="username" 
                                         placeholder="Enter your name"
                                         onChange={(e)=>handleChange(e,'username')}
-                                        value={data.name}
+                                        value={data.username}
                                         required
                                         invalid={error.errors?.response?.data?.username?true:false}
                                         />

@@ -34,7 +34,7 @@ export const getCurrentUser=()=>{
 
 export const getToken=()=>{
     if(isLoggedIn()){
-        return JSON.parse(localStorage.getItem("data")).jwtToken;
+        return JSON.parse(localStorage.getItem("data")).jwtToken
     }else{
         return null;
     }
